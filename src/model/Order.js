@@ -1,5 +1,4 @@
-import mongooose from 'mongoose';
-
+import mongoose from 'mongoose';
 import Product from './Product.js';
 
 
