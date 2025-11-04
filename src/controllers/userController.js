@@ -2,6 +2,14 @@ import User from "../model/User.js";
 import { comparePassword, hashPassword } from "../services/password.js";
 import { extractToken, generateToken, verifyToken } from "../services/token.js";
 class UserController {
+    /**
+     * En todas las funciones se maneja el try catch para capturar errores.
+     * Se usan los metodos de mongoose para interactuar con la base de datos.
+     * Las funciones son asincronas y usan await para esperar las promesas.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
+
     async create(req, res) {
         try {
             //Desestructuracion del body
@@ -179,5 +187,9 @@ class UserController {
     }
 }
 
+/**
+ * Exporta una instancia de UserController para manejar las operaciones relacionadas con usuarios.
+ * @module UserController
+ */
 
 export default new UserController();
