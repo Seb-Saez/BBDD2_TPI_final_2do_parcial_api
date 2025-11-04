@@ -13,7 +13,7 @@ export const generateToken = (payload) => {
 
 export const verifyToken = (token) => {
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, JWT_SECRET);
         return decoded;
     } catch (error) {
         return `Error verifying token: ${error.message}`;

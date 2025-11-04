@@ -1,4 +1,4 @@
-import mongoose, { mongo } from 'mongoose';
+import mongoose from 'mongoose';
 
 const direccionesSchema = new mongoose.Schema({
     calle: { type: String, required: true },

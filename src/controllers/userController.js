@@ -49,7 +49,8 @@ class UserController{
             const { id } = req.params;
             const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
             if(!updatedUser) return res.status(404).send("User not found");
-            res.status(200).send(updatedUser);
+            const {nombre, email} = updatedUser;
+            res.status(200).send({nombre, email});
         }catch(error){
             res.status(500).send(`Error updating user: ${error.message}`);
         }

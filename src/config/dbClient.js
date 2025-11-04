@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { set } from "mongoose";
 import { MONGO_URI } from "./envs.js";
 
 export const connect = async () => {
@@ -10,6 +10,7 @@ export const connect = async () => {
         process.exit(1);
     }
 };
+
 
 export const disconnect = async () => {
     try {

@@ -3,14 +3,16 @@ import { connect } from './config/dbClient.js';
 import { PORT } from './config/envs.js';
 
 import usersRoutes from './routes/usersRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js';
 
 const app = express();
 
 //middleware para que acepte json
 app.use(express.json());
 
-
-app.use ('/users', usersRoutes);
+//Rutas
+app.use('/users', usersRoutes);
+app.use('/reviews', reviewRoutes);
 
 
 
