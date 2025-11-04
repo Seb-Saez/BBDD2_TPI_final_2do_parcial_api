@@ -1,26 +1,30 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import { connect } from './config/dbClient.js';
+import { PORT } from './config/envs.js';
+
+import usersRoutes from './routes/usersRoutes.js';
 
 const app = express();
 
 //middleware para que acepte json
 app.use(express.json());
 
-// importamos los .env
-const PORT = process.env.PORT;
-const MONGO_URI = process.env.MONGO_URI;
+
+app.use ('/users', usersRoutes);
 
 
 
-
-// conexion a la BBDd
-mongoose.connect(MONGO_URI)
-    .then(()=> console.log("Conectado a la BBDD en Mongo correctamente"))
-    .catch(e => console.log("Error al conectar la BBDD" + e));
-
-app.listen(PORT, ()=>{
-    console.log("Servidor corriendo en el puerto: " + PORT);
-});
+(async () => {
+    try {
+        await connect();
+        
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    } catch (error) {
+        console.error("Error starting server:", error);
+    }
+})();
     
 
 

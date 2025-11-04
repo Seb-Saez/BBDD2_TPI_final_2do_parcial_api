@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { mongo } from 'mongoose';
 
 const direccionesSchema = new mongoose.Schema({
     calle: { type: String, required: true },
@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     nombre: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    direccion: [direccionesSchema],
+    direcciones: [direccionesSchema],
     telefono: { type: String, required: true },
     rol: { type: String, enum: ['CLIENT', 'ADMIN'], default: 'CLIENT' }
 }, { timestamps: true });
