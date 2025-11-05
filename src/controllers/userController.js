@@ -87,6 +87,13 @@ class UserController {
             //Se crea un objeto porque a mongoose se le pasa un objeto con los campos a actualizar
             const allowedUpdates = {};
             //Validaciones si no estan vacios se agregan al objeto con una key value
+            /**
+             * {
+             *  nombre: 'Nuevo Nombre',
+             *  email:  example@example.com,
+             *  password: 'hashedPassword'
+             * }
+             */
             if (nombre) allowedUpdates.nombre = nombre;
             if (email) allowedUpdates.email = email;
             if (password) {
