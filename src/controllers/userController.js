@@ -141,6 +141,18 @@ class UserController {
     }
     async login(req, res) {
         try {
+            const header = req.headers['authorization'];
+            if (header) {
+                //Extraer token
+                const extractedToken = extractToken(header);
+                if (extractedToken) {
+                    //Verificar token
+                    const verified = verifyToken(extractedToken);
+                    if (verified) {
+                        return res.status(200).send("Already logged in");
+                    }
+                }
+            }
             //Desestructuracion del body
             const { email, password } = req.body;
             //Buscar usuario por email
