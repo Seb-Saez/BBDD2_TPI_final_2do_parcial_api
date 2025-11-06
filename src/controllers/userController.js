@@ -66,19 +66,10 @@ class UserController {
     }
     async update(req, res) {
         try {
-            //Obtener token
-            const header = req.headers['authorization'];
-            if (!header) return res.status(401).send("Error updating user");
-            //Extraer token
-            const extractedToken = extractToken(header);
-            if (!extractedToken) return res.status(401).send("Error updating user");
-            //Verificar token
-            const verified = verifyToken(extractedToken);
-            if (!verified) return res.status(401).send("Error updating user");
             //Desestructurar id de params
             const { id } = req.params;
             //Verificar que el id del token coincida con el id a modificar o sea ADMIN
-            if (verified.id !== id && verified.rol !== 'ADMIN') return res.status(403).send("Access denied");
+            if (req.user.id !== id && req.user.rol !== 'ADMIN') return res.status(403).send("Access denied");
             //Desestructurar para Sacar solo el nombre, email o contraseña del body para actualizar
             const {email, nombre, password} = req.body;
             //Se crea un objeto porque a mongoose se le pasa un objeto con los campos a actualizar
@@ -116,19 +107,10 @@ class UserController {
 
     async delete(req, res) {
         try {
-            //Obtener token
-            const header = req.headers['authorization'];
-            if (!header) return res.status(401).send("Error in deleting user");
-            //Extraer token
-            const extractedToken = extractToken(header);
-            if (!extractedToken) return res.status(401).send("Error in deleting user");
-            //Verificar token
-            const verified = verifyToken(extractedToken);
-            if (!verified) return res.status(401).send("Error in deleting user");
             //Desestructurar id de params
             const { id } = req.params;
             //Verificar que coincida el id del token con el id a eliminar o sea ADMIN
-            if (verified.id !== id && verified.rol !== 'ADMIN') return res.status(403).send("Access denied");
+            if (req.user.id !== id && req.user.rol !== 'ADMIN') return res.status(403).send("Access denied");
             //Buscar usuario por id y eliminar
             const deletedUser = await User.findByIdAndDelete(id);
             //Si no se encuentra el usuario, 404
