@@ -37,15 +37,8 @@ class UserController {
 
     async getAll(req, res) {
         try {
-            //Obtener token
-            const header = req.headers['authorization'];
-            if (!header) return res.status(401).send("Error in fetching users");
-            //Extraer token
-            const verified = verifyHeaderTokenAndVerify(header);
-            if (!verified) return res.status(401).send("Error in fetching users");
-            //Verificar Administrador
-            if (verified.rol !== 'ADMIN') return res.status(403).send("Access denied");
-
+            //Verificar que el usuario sea ADMIN
+            if (req.user.rol !== 'ADMIN') return res.status(403).send("Unnautorized");
             //Traer los usuarios excluyendo contraseñas
             const users = await User.find().select('-password -__v');
             res.status(200).send({ users });
@@ -56,6 +49,9 @@ class UserController {
 
     async getById(req, res) {
         try {
+            //Verificar que el usuario sea ADMIN o el mismo usuario
+            if (req.user.id !== req.params.id && req.user.rol !== 'ADMIN') return res.status(403).send("Access denied");
+            //Buscar usuario por id
             const user = await User.findById(req.params.id);
             if (!user) return res.status(404).send("User not found");
             const { nombre, email } = user;
@@ -123,18 +119,6 @@ class UserController {
     }
     async login(req, res) {
         try {
-            const header = req.headers['authorization'];
-            if (header) {
-                //Extraer token
-                const extractedToken = extractToken(header);
-                if (extractedToken) {
-                    //Verificar token
-                    const verified = verifyToken(extractedToken);
-                    if (verified) {
-                        return res.status(200).send("Already logged in");
-                    }
-                }
-            }
             //Desestructuracion del body
             const { email, password } = req.body;
             //Buscar usuario por email
@@ -161,6 +145,7 @@ class UserController {
             res.status(500).send(`${error.message}`);
         }
     }
+
     async logout(req, res) {
         try {
             //Saca el email del body
