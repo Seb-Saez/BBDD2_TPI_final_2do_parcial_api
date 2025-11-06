@@ -10,19 +10,6 @@ import { verifyHeaderTokenAndVerify } from "../services/token";
  * @param {Function} next - Función para pasar al siguiente middleware.
  */
 
-
-
-
-/**
- * Authenticate
- * Esto es un middleware que autentica a un usuario mediante un token JWT.
- * Verifica el token en el encabezado de autorización con veryfyHeaderTokenAndVerify.
- * Si el token es válido, adjunta la información del usuario al objeto de solicitud y llama a next().
- * Si el token no es válido o está ausente, responde con un error 401 (No autorizado).
- * @param {Object} req - Objeto de solicitud de Express.
- * @param {Object} res - Objeto de respuesta de Express.
- * @param {Function} next - Función para pasar al siguiente middleware.
- */
 export const authenticate = (req, res, next) => {
     try {
         //Obtener token

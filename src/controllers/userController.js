@@ -150,16 +150,7 @@ class UserController {
         try {
             //Saca el email del body
             const { email } = req.body;
-            //Obtener token
-            const header = req.headers['authorization'];
-            //Si no existe el header de autorizacion
-            if (!header) return res.status(401).send("Error in logout");
-            //Extraer token
-            const extractedToken = extractToken(header);
-            if (!extractedToken) return res.status(401).send("Error in logout");
-            //Verificar token
-            const verified = verifyToken(extractedToken);
-            if (!verified) return res.status(401).send("Error in logout");
+            if(req.user.email !== email) return res.status(403).send("Access denied");
             //Buscar usuario por email
             const user = await User.findOne({ email });
             if (!user) return res.status(404).send("Error in logout");
