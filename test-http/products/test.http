@@ -6,15 +6,15 @@ GET http://localhost:3000/products/690c17fd5633cdf86dfa1cdc
 
 ### Create product
 POST http://localhost:3000/products
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGMxNjIzN2Q4ZjA2YjRjNTljODY3MyIsIm5vbWJyZSI6IkV6ZXF1aWVsIEdvbnphbGV6IiwiZW1haWwiOiJlemVxdWllbDFAZXhhbXBsZS5jb20iLCJyb2wiOiJBRE1JTiIsImlhdCI6MTc2MjQwMTI0OCwiZXhwIjoxNzY0OTkzMjQ4fQ.mFrp8wcymzruDzBy4JCXwvxpCb5-rLrz-TSZ1UKJ0KQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGMzYjg4YTBmMDkwMGM2MjFmM2M0YSIsIm5vbWJyZSI6IkV6ZXF1aWVsIEdvbnphbGV6IiwiZW1haWwiOiJlemVxdWllbDJAZXhhbXBsZS5jb20iLCJyb2wiOiJDTElFTlQiLCJpYXQiOjE3NjI0MDkzODEsImV4cCI6MTc2NTAwMTM4MX0.MZckdSUfqMIaFdi4IDX1NV-uO4zbcwEsBP1BneH6I_0
 Content-Type: application/json
 
 {
   "nombre": "Televisor",
-  "descripcion": "Laptop de alta performance",
-  "precio": 1200.00,
-  "stock": 10,
-  "marca": "Dell",
+  "descripcion": "Televisor 4K Ultra HD",
+  "precio": 800.00,
+  "stock": 5,
+  "marca": "Samsung",
   "categoria": "690c17fd5633cdf86dfa1cdc"
 }
 
@@ -36,4 +36,4 @@ DELETE http://localhost:3000/products/690c17fd5633cdf86dfa1cdc
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGMxNjIzN2Q4ZjA2YjRjNTljODY3MyIsIm5vbWJyZSI6IkV6ZXF1aWVsIEdvbnphbGV6IiwiZW1haWwiOiJlemVxdWllbDFAZXhhbXBsZS5jb20iLCJyb2wiOiJBRE1JTiIsImlhdCI6MTc2MjQwMDQ5NiwiZXhwIjoxNzY0OTkyNDk2fQ.X2wpQ7rbuUPnzlHlGmxfGobVmV371Z5eC8xPMrUZnx4
 
 ### Get products by category
-GET http://localhost:3000/products?categoria=690c17fd5633cdf86dfa1cdc
+GET http://localhost:3000/products?categoria=690c3baea0f0900c621f3c4d

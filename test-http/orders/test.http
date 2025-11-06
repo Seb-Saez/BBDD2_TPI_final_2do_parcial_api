@@ -13,7 +13,7 @@ Authorization: Bearer YOUR_JWT_TOKEN
 ### Create order
 POST http://localhost:3000/api/orders
 Content-Type: application/json
-Authorization: Bearer YOUR_JWT_TOKEN
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGMzYjg4YTBmMDkwMGM2MjFmM2M0YSIsIm5vbWJyZSI6IkV6ZXF1aWVsIEdvbnphbGV6IiwiZW1haWwiOiJlemVxdWllbDJAZXhhbXBsZS5jb20iLCJyb2wiOiJDTElFTlQiLCJpYXQiOjE3NjI0MDk0NzksImV4cCI6MTc2NTAwMTQ3OX0.L5c_aA7SPBJxB-19DNIIpbAl1JS0ii8Il8TGOr3G8wk
 
 {
   "userId": 1,

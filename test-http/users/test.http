@@ -15,19 +15,29 @@ Content-Type: application/json
 
 {
   "nombre": "Ezequiel Gonzalez",
-  "email": "ezequiel1@example.com",
+  "email": "ezequiel2@example.com",
   "password": "Password123!",
-  "telefono": "1234567890",
-  "rol": "ADMIN"
+  "telefono": "1234567890"
 }
 ###
 POST http://localhost:3000/users/login
 Content-Type: application/json
 
 {
-  "email": "ezequiel1@example.com",
+  "email": "ezequiel2@example.com",
   "password": "Password123!"
 }
+
+###
+###
+POST http://localhost:3000/users/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGMxNjIzN2Q4ZjA2YjRjNTljODY3MyIsIm5vbWJyZSI6IkV6ZXF1aWVsIEdvbnphbGV6IiwiZW1haWwiOiJlemVxdWllbDFAZXhhbXBsZS5jb20iLCJyb2wiOiJBRE1JTiIsImlhdCI6MTc2MjQwOTA1NSwiZXhwIjoxNzY1MDAxMDU1fQ.zDKkE_vwUIPCdW-HVs_ZxdWwxNQvsPWP6hQMPXR_R5A
+Content-Type: application/json
+
+{
+  "email": "ezequiel1@example.com"
+}
+
 
 ###
 GET http://localhost:3000/users
