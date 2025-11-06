@@ -1,5 +1,5 @@
 import Category from '../model/Category.js';
-
+import { verifyHeaderTokenAndVerify } from '../services/token.js';
 class CategoryController {
     async getAll(req, res) {
         try {
@@ -8,7 +8,7 @@ class CategoryController {
         } catch (error) {
             res.status(500).send(`Error fetching categories: ${error.message}`);
         }
-    } 
+    }
     async getById(req, res) {
         try {
             const category = await Category.findById(req.params.id).select('-__v -createdAt -updatedAt ');
@@ -48,10 +48,11 @@ class CategoryController {
             const { id } = req.params;
             const { nombre, descripcion } = req.body;
             const updatedCategory = {};
-            if (!category) return res.status(404).send("Category not found");
+
             if (nombre) updatedCategory.nombre = nombre;
             if (descripcion) updatedCategory.descripcion = descripcion;
             const category = await Category.findByIdAndUpdate(id, updatedCategory, { new: true });
+            if (!category) return res.status(404).send("Category not found");
             res.status(200).send({ category });
         } catch (error) {
             res.status(500).send(`Error updating category: ${error.message}`);
@@ -77,8 +78,8 @@ class CategoryController {
         try {
             const categoriesAggregate = await Category.aggregate([
                 {
-                    $match:{
-                        productos: { $exists: true,$ne: [] }
+                    $match: {
+                        productos: { $exists: true, $ne: [] }
                     },
                 },
                 {

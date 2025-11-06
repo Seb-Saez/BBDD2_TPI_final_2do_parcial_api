@@ -1,4 +1,4 @@
-
+import Category from '../model/Category.js';
 import Product from '../model/Product.js';
 import Review from '../model/Review.js';
 import User from '../model/User.js';
@@ -30,7 +30,7 @@ class ProductController {
             const verified = verifyHeaderTokenAndVerify(headers);
             if (!verified) return res.status(401).send("Unauthorized");
             if (!verifyRoleDecoded('ADMIN', verified)) return res.status(403).send("Access denied");
-            const {nombre,precio,descripcion,stock,marca,reviews,categoria} = req.body;
+            let {nombre,precio,descripcion,stock,marca,reviews,categoria} = req.body;
             if(!nombre || !precio || !stock || !marca) return res.status(400).send("Faltan datos obligatorios");
             if (isNaN(precio) || isNaN(stock)) return res.status(400).send("Precio y Stock deben ser numeros");
             if(precio < 0 || stock < 0) return res.status(400).send("Precio y Stock deben ser mayores o iguales a 0");
@@ -38,8 +38,8 @@ class ProductController {
             if(!descripcion) descripcion = "Sin descripción";
             if(!reviews) reviews = [];
             if(!categoria) categoria = null;
-        
-            const newProduct = await Product.create({
+
+            const newProduct = {
                 nombre,
                 precio,
                 descripcion,
@@ -47,8 +47,15 @@ class ProductController {
                 marca,
                 reviews,
                 categoria
-            });
-            res.status(201).send({ product: newProduct });
+            };
+            const createdProduct = await Product.create(newProduct);
+            if(categoria){
+                const categoryExists = await Category.findById(categoria);
+                if(!categoryExists) return res.status(400).send("Categoria no existe");
+                categoryExists.productos.push({producto_id: createdProduct._id});
+                await categoryExists.save();
+            }
+            res.status(201).send({ product: createdProduct });
         } catch (error) {
             res.status(500).send(`Error creating product: ${error.message}`);
         }

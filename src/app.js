@@ -21,10 +21,6 @@ app.use('/categories', categoryRoutes);
 app.use('/products', productsRoutes);
 app.use('/cart', cartRoutes);
 app.use('/orders', ordersRoutes);
-app.use('/', (req, res) => {
-    res.send('Welcome to the API');
-});
-
 
 
 (async () => {

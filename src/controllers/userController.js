@@ -1,6 +1,6 @@
 import User from "../model/User.js";
 import { comparePassword, hashPassword } from "../services/password.js";
-import { extractToken, generateToken, verifyToken } from "../services/token.js";
+import { extractToken, generateToken, verifyHeaderTokenAndVerify, verifyToken } from "../services/token.js";
 class UserController {
     /**
      * En todas las funciones se maneja el try catch para capturar errores.

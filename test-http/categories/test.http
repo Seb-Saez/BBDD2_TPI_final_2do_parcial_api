@@ -1,26 +1,28 @@
 ### Get all categories
-GET http://localhost:3000/api/categories
+GET http://localhost:3000/categories
 
 ### Get category by ID
-GET http://localhost:3000/api/categories/1
+GET http://localhost:3000/categories/1
 
 ### Create category
-POST http://localhost:3000/api/categories
+POST http://localhost:3000/categories
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGMxNjIzN2Q4ZjA2YjRjNTljODY3MyIsIm5vbWJyZSI6IkV6ZXF1aWVsIEdvbnphbGV6IiwiZW1haWwiOiJlemVxdWllbDFAZXhhbXBsZS5jb20iLCJyb2wiOiJBRE1JTiIsImlhdCI6MTc2MjQwMTI0OCwiZXhwIjoxNzY0OTkzMjQ4fQ.mFrp8wcymzruDzBy4JCXwvxpCb5-rLrz-TSZ1UKJ0KQ
 
 {
-  "name": "Electrónica",
-  "description": "Productos electrónicos en general"
+  "nombre": "Electrónica",
+  "descripcion": "Productos electrónicos en general"
 }
 
 ### Update category
-PUT http://localhost:3000/api/categories/1
+PUT http://localhost:3000/categories/690c17fd5633cdf86dfa1cdc
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGMxNjIzN2Q4ZjA2YjRjNTljODY3MyIsIm5vbWJyZSI6IkV6ZXF1aWVsIEdvbnphbGV6IiwiZW1haWwiOiJlemVxdWllbDFAZXhhbXBsZS5jb20iLCJyb2wiOiJBRE1JTiIsImlhdCI6MTc2MjQwMTI0OCwiZXhwIjoxNzY0OTkzMjQ4fQ.mFrp8wcymzruDzBy4JCXwvxpCb5-rLrz-TSZ1UKJ0KQ
 
 {
-  "name": "Electrónica Premium",
-  "description": "Productos electrónicos de alta gama"
+  "nombre": "Electrónica Premium",
+  "descripcion": "Productos electrónicos de alta gama"
 }
 
 ### Delete category
-DELETE http://localhost:3000/api/categories/1
+DELETE http://localhost:3000/categories/1

@@ -1,42 +1,54 @@
-POST http://localhost:3000/api/users/register
+
+POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "name": "Juan Pérez",
-  "email": "juan@example.com",
+  "nombre": "Ezequiel Perez",
+  "email": "cliente@example.com",
   "password": "Password123!",
-  "phone": "1234567890"
+  "telefono": "1234567890"
 }
 
 ###
-POST http://localhost:3000/api/users/login
+POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "email": "juan@example.com",
+  "nombre": "Ezequiel Gonzalez",
+  "email": "ezequiel1@example.com",
+  "password": "Password123!",
+  "telefono": "1234567890",
+  "rol": "ADMIN"
+}
+###
+POST http://localhost:3000/users/login
+Content-Type: application/json
+
+{
+  "email": "ezequiel1@example.com",
   "password": "Password123!"
 }
 
 ###
-GET http://localhost:3000/api/users
-Authorization: Bearer YOUR_JWT_TOKEN
+GET http://localhost:3000/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGMxNjIzN2Q4ZjA2YjRjNTljODY3MyIsIm5vbWJyZSI6IkV6ZXF1aWVsIEdvbnphbGV6IiwiZW1haWwiOiJlemVxdWllbDFAZXhhbXBsZS5jb20iLCJyb2wiOiJBRE1JTiIsImlhdCI6MTc2MjM5OTk0MSwiZXhwIjoxNzY0OTkxOTQxfQ.UMyc2lfq31djChEpODG33scBzmkU3jdqqyg_qRz5HzM
 Content-Type: application/json
 
 ###
-GET http://localhost:3000/api/users/1
-Authorization: Bearer YOUR_JWT_TOKEN
+GET http://localhost:3000/users/6908c6b4429c34ac7404f45c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGMxNjA3OTFlZDJmYjZmMjE2ZjRkMSIsIm5vbWJyZSI6Ikp1YW4gUMOpcmV6IiwiZW1haWwiOiJqdWFuQGV4YW1wbGUuY29tIiwicm9sIjoiQ0xJRU5UIiwiaWF0IjoxNzYyMzk5NjE4LCJleHAiOjE3NjQ5OTE2MTh9.lUGtR-HGpleqapw9PD1dRFlKcbrrG4s6slmEwwnr54M
 Content-Type: application/json
 
 ###
-PUT http://localhost:3000/api/users/1
+PUT http://localhost:3000/users/6908c6b4429c34ac7404f45c
 Content-Type: application/json
-Authorization: Bearer YOUR_JWT_TOKEN
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGMxNjIzN2Q4ZjA2YjRjNTljODY3MyIsIm5vbWJyZSI6IkV6ZXF1aWVsIEdvbnphbGV6IiwiZW1haWwiOiJlemVxdWllbDFAZXhhbXBsZS5jb20iLCJyb2wiOiJBRE1JTiIsImlhdCI6MTc2MjQwMDAxNCwiZXhwIjoxNzY0OTkyMDE0fQ.A9ShguyvcLyw_ZpgqhgtCBAo9NmRRQQohw_K99AhRbg
 
 {
-  "name": "Juan Carlos Pérez",
-  "phone": "0987654321"
+  "nombre": "Juan Carlos Pérez",
+  "telefono": "0987654321"
 }
 
 ###
-DELETE http://localhost:3000/api/users/1
-Authorization: Bearer YOUR_JWT_TOKEN
+DELETE http://localhost:3000/users/6908c6b4429c34ac7404f45c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGMxNjIzN2Q4ZjA2YjRjNTljODY3MyIsIm5vbWJyZSI6IkV6ZXF1aWVsIEdvbnphbGV6IiwiZW1haWwiOiJlemVxdWllbDFAZXhhbXBsZS5jb20iLCJyb2wiOiJBRE1JTiIsImlhdCI6MTc2MjQwMDAxNCwiZXhwIjoxNzY0OTkyMDE0fQ.A9ShguyvcLyw_ZpgqhgtCBAo9NmRRQQohw_K99AhRbg
