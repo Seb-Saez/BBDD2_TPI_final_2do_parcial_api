@@ -1,0 +1,34 @@
+### Get all reviews
+GET http://localhost:3000/api/reviews
+
+### Get review by ID
+GET http://localhost:3000/api/reviews/1
+
+### Get reviews for product
+GET http://localhost:3000/api/reviews/product/1
+
+### Create review
+POST http://localhost:3000/api/reviews
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "userId": 1,
+  "productId": 1,
+  "rating": 5,
+  "comment": "Excelente producto, muy recomendado"
+}
+
+### Update review
+PUT http://localhost:3000/api/reviews/1
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "rating": 4,
+  "comment": "Muy buen producto"
+}
+
+### Delete review
+DELETE http://localhost:3000/api/reviews/1
+Authorization: Bearer YOUR_JWT_TOKEN

@@ -1,0 +1,26 @@
+### Get all categories
+GET http://localhost:3000/api/categories
+
+### Get category by ID
+GET http://localhost:3000/api/categories/1
+
+### Create category
+POST http://localhost:3000/api/categories
+Content-Type: application/json
+
+{
+  "name": "Electrónica",
+  "description": "Productos electrónicos en general"
+}
+
+### Update category
+PUT http://localhost:3000/api/categories/1
+Content-Type: application/json
+
+{
+  "name": "Electrónica Premium",
+  "description": "Productos electrónicos de alta gama"
+}
+
+### Delete category
+DELETE http://localhost:3000/api/categories/1

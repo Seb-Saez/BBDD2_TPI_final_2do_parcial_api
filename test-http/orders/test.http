@@ -1,0 +1,35 @@
+### Get all orders (admin)
+GET http://localhost:3000/api/orders
+Authorization: Bearer YOUR_JWT_TOKEN
+
+### Get order by ID
+GET http://localhost:3000/api/orders/1
+Authorization: Bearer YOUR_JWT_TOKEN
+
+### Get user orders
+GET http://localhost:3000/api/orders/user/1
+Authorization: Bearer YOUR_JWT_TOKEN
+
+### Create order
+POST http://localhost:3000/api/orders
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "userId": 1,
+  "totalPrice": 2400.00,
+  "status": "pending"
+}
+
+### Update order status
+PUT http://localhost:3000/api/orders/1
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "status": "confirmed"
+}
+
+### Delete order
+DELETE http://localhost:3000/api/orders/1
+Authorization: Bearer YOUR_JWT_TOKEN

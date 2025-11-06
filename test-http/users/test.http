@@ -1,12 +1,42 @@
-POST http://localhost:3000/users/login
+POST http://localhost:3000/api/users/register
 Content-Type: application/json
 
 {
-    "email": "seba@example.com",
-    "password": "Password123!"
+  "name": "Juan Pérez",
+  "email": "juan@example.com",
+  "password": "Password123!",
+  "phone": "1234567890"
 }
 
 ###
-GET http://localhost:3000/users
-Authorization: Bearer <<token>>
+POST http://localhost:3000/api/users/login
 Content-Type: application/json
+
+{
+  "email": "juan@example.com",
+  "password": "Password123!"
+}
+
+###
+GET http://localhost:3000/api/users
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+###
+GET http://localhost:3000/api/users/1
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+###
+PUT http://localhost:3000/api/users/1
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "name": "Juan Carlos Pérez",
+  "phone": "0987654321"
+}
+
+###
+DELETE http://localhost:3000/api/users/1
+Authorization: Bearer YOUR_JWT_TOKEN

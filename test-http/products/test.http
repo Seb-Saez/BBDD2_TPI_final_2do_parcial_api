@@ -1,0 +1,35 @@
+### Get all products
+GET http://localhost:3000/api/products
+
+### Get product by ID
+GET http://localhost:3000/api/products/1
+
+### Create product
+POST http://localhost:3000/api/products
+Content-Type: application/json
+
+{
+  "name": "Laptop Dell",
+  "description": "Laptop de alta performance",
+  "price": 1200.00,
+  "stock": 10,
+  "categoryId": 1
+}
+
+### Update product
+PUT http://localhost:3000/api/products/1
+Content-Type: application/json
+
+{
+  "name": "Laptop Dell XPS",
+  "description": "Laptop de ultra alta performance",
+  "price": 1500.00,
+  "stock": 15,
+  "categoryId": 1
+}
+
+### Delete product
+DELETE http://localhost:3000/api/products/1
+
+### Get products by category
+GET http://localhost:3000/api/products/category/1
