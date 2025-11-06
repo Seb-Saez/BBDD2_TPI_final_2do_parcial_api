@@ -41,10 +41,7 @@ class UserController {
             const header = req.headers['authorization'];
             if (!header) return res.status(401).send("Error in fetching users");
             //Extraer token
-            const extractedToken = extractToken(header);
-            if (!extractedToken) return res.status(401).send("Error in fetching users");
-            //Verificar token
-            const verified = verifyToken(extractedToken);
+            const verified = verifyHeaderTokenAndVerify(header);
             if (!verified) return res.status(401).send("Error in fetching users");
             //Verificar Administrador
             if (verified.rol !== 'ADMIN') return res.status(403).send("Access denied");
@@ -103,7 +100,9 @@ class UserController {
             //Buscar usuario por id y actualizar
             //New:true para devolver el documento actualizado
             //Se le pasa el objeto con los campos a actualizar parametrizados
-            const updatedUser = await User.findByIdAndUpdate(id, allowedUpdates, { new: true });
+            const updatedUser = await User.findByIdAndUpdate(id, {
+                $set: allowedUpdates
+            }, { new: true });
             //Si no se encuentra el usuario, 404
             if (!updatedUser) return res.status(404).send("Error in updating user");
             //Si se encuentra desestructurar nombre y email para devolver

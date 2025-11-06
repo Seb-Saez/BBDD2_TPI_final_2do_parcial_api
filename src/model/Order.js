@@ -10,9 +10,10 @@ import Product from './Product.js';
  */
 
 const productSchema = new mongoose.Schema({
-    producto : { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
+    producto: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
+    nombre: { type: String },
     cantidad: { type: Number, required: true, min: 1 },
-    subtotal: { type: Number, required: true }
+    subtotal: { type: Number, default: 0 }
 });
 
 /**
@@ -27,9 +28,9 @@ const productSchema = new mongoose.Schema({
 const orderSchema = new mongoose.Schema({
     usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     productos: { type: [productSchema], required: true },
-    estado: {type: String, enum: ['PENDIENTE', 'ENVIADO', 'ENTREGADO'], default: 'PENDIENTE'},
-    total: { type: Number},
-    metodoPago: {type:String, required: true}
+    estado: { type: String, enum: ['PENDIENTE', 'ENVIADO', 'ENTREGADO','CANCELADO'], default: 'PENDIENTE' },
+    total: { type: Number },
+    metodoPago: { type: String, required: true }
 }, { timestamps: true });
 
 /**
@@ -38,11 +39,16 @@ const orderSchema = new mongoose.Schema({
  * Actualiza el campo subtotal del producto.
  * Retorna el subtotal calculado.
  */
-productSchema.methods.calcularSubtotal = async function() {
+productSchema.methods.calcularSubtotal = async function () {
     const product = await Product.findById(this.producto);
     if (!product) throw new Error('Producto no encontrado para calcular subtotal');
     this.subtotal = product.precio * this.cantidad;
     return this.subtotal;
+}
+productSchema.methods.getProductName = async function () {
+    const product = await Product.findById(this.producto);
+    if (!product) throw new Error('Producto no encontrado para obtener nombre');
+    this.nombre = product.nombre;
 }
 
 /**
@@ -50,12 +56,16 @@ productSchema.methods.calcularSubtotal = async function() {
  * Llama a calcularSubtotal en cada producto y suma todos los subtotales.
  * Actualiza el campo total de la orden.
  */
-orderSchema.methods.calcularTotal = async function() {
+orderSchema.methods.calcularTotalyNombre = async function () {
     const productosSubtotal = await Promise.all(this.productos.map(item => item.calcularSubtotal()));
+    /**
+     * [10, 20, 30]
+     */
     /** 
      * @param {Array<Number>} productosSubtotal - Arreglo con los subtotales de cada producto.
      * @return {Number} total - Suma de todos los subtotales.
     */
+    const productosNames = await Promise.all(this.productos.map(item => item.getProductName()));
     this.total = productosSubtotal.reduce((acc, item) => acc + item, 0);
 }
 
@@ -63,6 +73,8 @@ orderSchema.methods.calcularTotal = async function() {
  * Middleware que se ejecuta antes de guardar una orden.
  * Calcula el total de la orden automáticamente antes de guardar.
  */
-orderSchema.pre('save', async function() {
-    await this.calcularTotal();
-});
+orderSchema.pre('save', async function () {
+    await this.calcularTotalyNombre();
+})
+const Order = mongoose.model('Order', orderSchema);
+export default Order;

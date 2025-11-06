@@ -66,3 +66,20 @@ export const extractToken = (header) => {
         return null;
     }
 }
+
+export const verifyHeaderTokenAndVerify = (header) => {
+    const extractedToken = extractToken(header);
+    if (!extractedToken) return null;
+    const verified = verifyToken(extractedToken);
+    if (!verified) return null;
+    return verified;
+}
+
+export const verifyRoleDecoded = (role) => {
+    if(role === 'ADMIN'){
+        return true;
+    }else if(role === 'CLIENT'){
+        return true;
+    }
+    return false;
+}

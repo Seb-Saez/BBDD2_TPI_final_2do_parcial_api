@@ -6,7 +6,7 @@ const productItemsSchema = new mongoose.Schema({
 });
 
 const cartSchema = new mongoose.Schema({
-    usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, unique: true },
     productos: [productItemsSchema],
 }, { timestamps: true });
 

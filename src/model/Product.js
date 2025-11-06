@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema({
     categoria: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
     marca: { type: String },
     stock: { type: Number, default: 0 },
-    reseñas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }]
+    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }]
 
 }, { timestamps: true });
 
