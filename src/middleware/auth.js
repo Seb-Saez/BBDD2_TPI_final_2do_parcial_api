@@ -1,4 +1,4 @@
-import { verifyHeaderTokenAndVerify } from "../services/token";
+import { verifyHeaderTokenAndVerify } from "../services/token.js";
 
 /**
  * Middleware para autenticar usuarios mediante tokens JWT.

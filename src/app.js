@@ -15,12 +15,12 @@ const app = express();
 app.use(express.json());
 
 //Rutas
-app.use('/users', usersRoutes);
-app.use('/reviews', reviewRoutes);
-app.use('/categories', categoryRoutes);
-app.use('/products', productsRoutes);
-app.use('/cart', cartRoutes);
-app.use('/orders', ordersRoutes);
+app.use('/api/users', usersRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/products', productsRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/orders', ordersRoutes);
 
 
 (async () => {

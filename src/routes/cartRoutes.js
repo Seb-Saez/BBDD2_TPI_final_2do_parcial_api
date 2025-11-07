@@ -9,5 +9,7 @@ router.get('/', cartController.getAll);
 router.get('/:id', cartController.getById);
 router.put('/:id', cartController.update);
 router.delete('/:id', cartController.delete);
+router.get('/:usuarioId/total', cartController.getCartTotal);
+
 
 export default router;
