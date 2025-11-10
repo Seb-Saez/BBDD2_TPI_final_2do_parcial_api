@@ -19,7 +19,13 @@ class ProductController {
      */
     async getAll(req, res) {
         try {
-            const products = await Product.find().select('-__v -createdAt -updatedAt');
+            const products = await Product.find().select('-__v -createdAt -updatedAt').populate({
+                path: 'reviews',
+                select: '-__v -createdAt -updatedAt -usuario -producto -_id',
+            }).populate({
+                path: 'categoria',
+                select: 'nombre -_id',
+            });
             res.status(200).json({ productos: products });
         } catch (error) {
             res.status(500).json({ mensaje: `Error al obtener los productos: ${error.message}` });

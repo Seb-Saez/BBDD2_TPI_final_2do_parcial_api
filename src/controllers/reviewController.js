@@ -32,6 +32,7 @@ class ReviewController {
             };
             try {
                 const newReview = await Review.create(review);
+                await Product.findByIdAndUpdate(productId, { $push: { reviews: newReview._id } });
                 res.status(200).json({
                     mensaje: "Reseña creada correctamente",
                     reseña: newReview
@@ -51,7 +52,13 @@ class ReviewController {
      */
     async getAll(req, res) {
         try {
-            const reviews = await Review.find();
+            const reviews = await Review.find().populate({
+                path: 'usuario',
+                select: 'nombre -_id'
+            }).populate({
+                path: 'producto',
+                select: 'nombre -_id'
+            }).select('-__v -createdAt -updatedAt');
             res.status(200).json({
                 mensaje: "Reseñas obtenidas correctamente",
                 reseñas: reviews
@@ -68,7 +75,13 @@ class ReviewController {
      */
     async getById(req, res) {
         try {
-            const review = await Review.findById(req.params.id);
+            const review = await Review.findById(req.params.id).populate({
+                path: 'usuario',
+                select: 'nombre -_id'
+            }).populate({
+                path: 'producto',
+                select: 'nombre -_id'
+            }).select('-__v -createdAt -updatedAt');
             if (!review) return res.status(404).json({ mensaje: "Reseña no encontrada" });
             res.status(200).json({
                 mensaje: "Reseña encontrada",
