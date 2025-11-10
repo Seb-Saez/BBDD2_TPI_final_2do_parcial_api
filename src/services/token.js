@@ -14,6 +14,7 @@ export const generateToken = (payload) => {
         {
             expiresIn: TOKEN_EXPIRATION
         });
+    
     return token;
 }
 

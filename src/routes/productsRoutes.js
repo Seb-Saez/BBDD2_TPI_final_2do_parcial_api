@@ -1,5 +1,6 @@
 import express from 'express';
 import productController from '../controllers/productController.js';
+import { adminAuthenticate } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -7,9 +8,9 @@ router.get('/filtro', productController.filterProducts);
 router.get('/top', productController.getTopProducts);
 router.get('/', productController.getAll);
 router.get('/:id', productController.getById);
-router.post('/', productController.create);
-router.put('/:id', productController.update);
-router.patch('/:id/stock', productController.updateStock);
-router.delete('/:id', productController.delete);
+router.post('/', adminAuthenticate, productController.create);
+router.put('/:id', adminAuthenticate, productController.update);
+router.patch('/:id/stock', adminAuthenticate, productController.updateStock);
+router.delete('/:id', adminAuthenticate, productController.delete);
 
 export default router;

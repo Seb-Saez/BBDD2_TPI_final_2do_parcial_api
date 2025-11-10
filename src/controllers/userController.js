@@ -1,10 +1,7 @@
 import User from "../model/User.js";
 import { comparePassword, hashPassword } from "../services/password.js";
 import {
-    extractToken,
     generateToken,
-    verifyHeaderTokenAndVerify,
-    verifyToken,
 } from "../services/token.js";
 
 class UserController {
@@ -18,7 +15,7 @@ class UserController {
 
     async create(req, res) {
         try {
-            const { nombre, email, password, telefono, rol, direcciones } = req.body;
+            const { nombre, email, password, telefono, direcciones } = req.body;
 
             const hashedPassword = await hashPassword(password);
 
@@ -34,7 +31,6 @@ class UserController {
                 password: hashedPassword,
                 direcciones: direccionesArray,
                 telefono,
-                rol,
             };
             await User.create(newUser);
 

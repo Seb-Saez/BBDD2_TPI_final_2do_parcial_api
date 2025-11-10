@@ -1,7 +1,19 @@
 import Category from '../model/Category.js';
-import { verifyHeaderTokenAndVerify } from '../services/token.js';
 
 class CategoryController {
+    /**
+     * En todas las funciones se maneja el try catch para capturar errores.
+     * Se usan los métodos de mongoose para interactuar con la base de datos.
+     * Las funciones son asincrónicas y usan await para esperar las promesas.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
+
+    /**
+     * Obtener todas las categorías.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async getAll(req, res) {
         try {
             const categories = await Category.find().select('-__v -createdAt -updatedAt');
@@ -11,6 +23,11 @@ class CategoryController {
         }
     }
 
+    /**
+     * Obtener una categoría específica por su ID.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async getById(req, res) {
         try {
             const category = await Category.findById(req.params.id).select('-__v -createdAt -updatedAt');
@@ -21,14 +38,13 @@ class CategoryController {
         }
     }
 
+    /**
+     * Crear una nueva categoría.
+     * El campo 'nombre' es obligatorio.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async create(req, res) {
-        const header = req.headers['authorization'];
-        if (!header) return res.status(401).json({ mensaje: "No autorizado" });
-
-        const verified = verifyHeaderTokenAndVerify(header);
-        if (!verified) return res.status(401).json({ mensaje: "Token inválido o expirado" });
-        if (verified.rol !== 'ADMIN') return res.status(403).json({ mensaje: "Acceso denegado" });
-
         try {
             const { nombre, descripcion } = req.body;
             if (!nombre) return res.status(400).json({ mensaje: "El campo 'nombre' es obligatorio" });
@@ -44,14 +60,13 @@ class CategoryController {
         }
     }
 
+    /**
+     * Actualizar una categoría existente.
+     * Actualiza solo los campos proporcionados en el cuerpo de la solicitud.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async update(req, res) {
-        const header = req.headers['authorization'];
-        if (!header) return res.status(401).json({ mensaje: "No autorizado" });
-
-        const verified = verifyHeaderTokenAndVerify(header);
-        if (!verified) return res.status(401).json({ mensaje: "Token inválido o expirado" });
-        if (verified.rol !== 'ADMIN') return res.status(403).json({ mensaje: "Acceso denegado" });
-
         try {
             const { id } = req.params;
             const { nombre, descripcion } = req.body;
@@ -69,14 +84,12 @@ class CategoryController {
         }
     }
 
+    /**
+     * Eliminar una categoría por su ID.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async delete(req, res) {
-        const header = req.headers['authorization'];
-        if (!header) return res.status(401).json({ mensaje: "No autorizado" });
-
-        const verified = verifyHeaderTokenAndVerify(header);
-        if (!verified) return res.status(401).json({ mensaje: "Token inválido o expirado" });
-        if (verified.rol !== 'ADMIN') return res.status(403).json({ mensaje: "Acceso denegado" });
-
         try {
             const { id } = req.params;
             const category = await Category.findByIdAndDelete(id);
@@ -88,6 +101,12 @@ class CategoryController {
         }
     }
 
+    /**
+     * Obtener estadísticas de categorías.
+     * Retorna el conteo de productos por cada categoría.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async getCategoryStats(req, res) {
         try {
             const categoriesAggregate = await Category.aggregate([

@@ -1,56 +1,23 @@
 import Cart from '../model/Cart.js';
 import Order from '../model/Order.js';
-import mongoose from 'mongoose';
-import { verifyRoleDecoded } from '../services/token.js';
-import { verifyHeaderTokenAndVerify } from '../services/token.js';
 
 class OrderController {
+    /**
+     * En todas las funciones se maneja el try catch para capturar errores.
+     * Se usan los métodos de mongoose para interactuar con la base de datos.
+     * Las funciones son asincrónicas y usan await para esperar las promesas.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
 
-    //  Crear pedido
-    // async create(req, res) {
-    //     try {
-    //         const header = req.headers['authorization'];
-    //         if (!header) return res.status(401).json({ error: "No autorizado" });
-
-    //         // Extraer token
-    //         const verified = verifyHeaderTokenAndVerify(header);
-    //         const { userId, metodoPago } = req.body;
-
-    //         if (verified.id !== userId) return res.status(403).json({ error: "Acceso denegado" });
-    //         if (!userId || !metodoPago) return res.status(400).json({ error: "Faltan campos obligatorios" });
-
-    //         const cart = await Cart.findOne({ usuario: userId });
-    //         if (!cart || cart.productos.length === 0) {
-    //             return res.status(400).json({ error: "El carrito está vacío o no existe" });
-    //         }
-
-
-    //         const newOrder = await Order.create({
-    //             usuario: userId,
-    //             productos: cart.productos,
-    //             metodoPago: metodoPago
-    //         });
-
-    //         res.status(201).json({
-    //             mensaje: "Pedido creado correctamente",
-    //             pedido: newOrder
-    //         });
-    //     } catch (error) {
-    //         res.status(500).json({ error: `Error al crear el pedido: ${error.message}` });
-    //     }
-    // }
-
-
-    // cambios seba probando
-    // nuevo create de carrito
+    /**
+     * Crear un nuevo pedido a partir del carrito del usuario.
+     * Convierte los productos del carrito en una orden y elimina el carrito.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async create(req, res) {
     try {
-        const header = req.headers['authorization'];
-        if (!header) return res.status(401).json({ error: "No autorizado" });
-
-        const verified = verifyHeaderTokenAndVerify(header);
-        if (!verifyRoleDecoded(verified.rol)) return res.status(403).json({ error: "Acceso denegado" });
-
         const { userId, metodoPago } = req.body;
 
         const cart = await Cart.findOne({ usuario: userId });
@@ -60,16 +27,13 @@ class OrderController {
 
         // ✅ Convertimos correctamente los productos del carrito
         const productosConvertidos = cart.productos.map(p => ({
-            producto: p.product?._id || p.product, // ← toma el id real
-            nombre: p.product?.nombre || p.nombre,
+            producto: p.product._id, // ← toma el id real
             cantidad: p.cantidad,
-            subtotal: p.product?.precio ? p.product.precio * p.cantidad : p.subtotal
         }));
 
         const order = new Order({
             usuario: userId,
             productos: productosConvertidos,
-            total: cart.total,
             metodoPago: metodoPago,
             fecha: new Date()
         });
@@ -82,20 +46,15 @@ class OrderController {
         res.status(500).json({ error: `Error al crear el pedido: ${error.message}` });
     }
 }
-
-
-
-
-
-    //  Obtener todos los pedidos (solo admin)
+    
+    /**
+     * Obtener todos los pedidos con información del usuario (solo admin).
+     * Usa agregación para incluir datos del usuario en la respuesta.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async getAll(req, res) {
         try {
-            const header = req.headers['authorization'];
-            if (!header) return res.status(401).json({ error: "No autorizado" });
-
-            const verified = verifyHeaderTokenAndVerify(header);
-            if (!verified || verified.rol !== 'ADMIN') return res.status(403).json({ error: "Acceso denegado" });
-
             const orders = await Order.aggregate([
                 {
                     $lookup: {
@@ -125,22 +84,17 @@ class OrderController {
         }
     }
 
-    //  Obtener pedido por ID
+    /**
+     * Obtener un pedido específico por su ID.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async getById(req, res) {
         try {
-            const header = req.headers['authorization'];
-            if (!header) return res.status(401).json({ error: "No autorizado" });
-
-            const verified = verifyHeaderTokenAndVerify(header);
-            if (!verified) return res.status(403).json({ error: "Acceso denegado" });
-
             const { id } = req.params;
             if (!id) return res.status(400).json({ error: "El ID del pedido es obligatorio" });
 
             const order = await Order.findOne({ _id: id });
-
-            if (!verifyRoleDecoded(verified.rol))
-                return res.status(403).json({ error: "Acceso denegado" });
 
             if (!order) return res.status(404).json({ error: "Pedido no encontrado" });
 
@@ -150,15 +104,14 @@ class OrderController {
         }
     }
 
-    //  Actualizar estado del pedido
+    /**
+     * Actualizar el estado de un pedido.
+     * Estados válidos: PENDIENTE, ENVIADO, ENTREGADO, CANCELADO.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async update(req, res) {
         try {
-            const header = req.headers['authorization'];
-            if (!header) return res.status(401).json({ error: "No autorizado" });
-
-            const verified = verifyHeaderTokenAndVerify(header);
-            if (verified.rol !== 'ADMIN') return res.status(403).json({ error: "Acceso denegado" });
-
             const { id } = req.params;
             const { estado } = req.body;
 
@@ -179,15 +132,13 @@ class OrderController {
         }
     }
 
-    //  Eliminar pedido
+    /**
+     * Eliminar un pedido por su ID.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async delete(req, res) {
         try {
-            const header = req.headers['authorization'];
-            if (!header) return res.status(401).json({ error: "No autorizado" });
-
-            const verified = verifyHeaderTokenAndVerify(header);
-            if (verified.rol !== 'ADMIN') return res.status(403).json({ error: "Acceso denegado" });
-
             const { id } = req.params;
             const order = await Order.findByIdAndDelete(id);
 
@@ -199,15 +150,14 @@ class OrderController {
         }
     }
 
-    //  Obtener pedidos por estado
+    /**
+     * Obtener estadísticas de pedidos agrupados por estado.
+     * Retorna el conteo de pedidos por cada estado.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async getOrdersByState(req, res) {
         try {
-            const header = req.headers['authorization'];
-            if (!header) return res.status(401).json({ error: "No autorizado" });
-
-            const verified = verifyHeaderTokenAndVerify(header);
-            if (!verified || verified.rol !== 'ADMIN') return res.status(403).json({ error: "Acceso denegado" });
-
             const stats = await Order.aggregate([
                 {
                     $group: {
@@ -224,8 +174,12 @@ class OrderController {
         }
     }
 
-    // obener carrito por userId
-
+    /**
+     * Obtener todos los pedidos de un usuario específico.
+     * Incluye información de productos y usuario mediante populate.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async getOrdersByUserId(req, res) {
         try {
             const { userId } = req.params;

@@ -6,7 +6,7 @@ const router = express.Router()
 
 //Rutas de usuarios
 //Crear usuario
-//Rutas protegidas que requieren autenticación mediante el middlewarE 'authenticate'
+//Rutas protegidas que requieren autenticación mediante el middleware 'authenticate'
 router.post("/", userController.create)
 //Login y Logout
 /**

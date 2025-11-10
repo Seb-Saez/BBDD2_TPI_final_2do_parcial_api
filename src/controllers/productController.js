@@ -2,9 +2,21 @@ import Category from '../model/Category.js';
 import Product from '../model/Product.js';
 import Review from '../model/Review.js';
 import User from '../model/User.js';
-import { verifyHeaderTokenAndVerify, verifyRoleDecoded } from '../services/token.js';
 
 class ProductController {
+    /**
+     * En todas las funciones se maneja el try catch para capturar errores.
+     * Se usan los métodos de mongoose para interactuar con la base de datos.
+     * Las funciones son asincrónicas y usan await para esperar las promesas.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
+
+    /**
+     * Obtener todos los productos.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async getAll(req, res) {
         try {
             const products = await Product.find().select('-__v -createdAt -updatedAt');
@@ -14,6 +26,11 @@ class ProductController {
         }
     }
 
+    /**
+     * Obtener un producto específico por su ID.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async getById(req, res) {
         try {
             const { id } = req.params;
@@ -25,14 +42,14 @@ class ProductController {
         }
     }
 
+    /**
+     * Crear un nuevo producto.
+     * Valida datos obligatorios y asocia el producto a una categoría si se proporciona.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async create(req, res) {
         try {
-            const headers = req.headers['authorization'];
-            if (!headers) return res.status(401).json({ mensaje: "No autorizado" });
-            const verified = verifyHeaderTokenAndVerify(headers);
-            if (!verified) return res.status(401).json({ mensaje: "No autorizado" });
-            if (!verifyRoleDecoded('ADMIN', verified)) return res.status(403).json({ mensaje: "Acceso denegado" });
-
             let { nombre, precio, descripcion, stock, marca, reviews, categoria } = req.body;
             if (!nombre || !precio || !stock || !marca) return res.status(400).json({ mensaje: "Faltan datos obligatorios" });
             if (isNaN(precio) || isNaN(stock)) return res.status(400).json({ mensaje: "El precio y el stock deben ser números" });
@@ -58,14 +75,14 @@ class ProductController {
         }
     }
 
+    /**
+     * Actualizar un producto existente.
+     * Actualiza solo los campos proporcionados en el cuerpo de la solicitud.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async update(req, res) {
         try {
-            const headers = req.headers['authorization'];
-            if (!headers) return res.status(403).json({ mensaje: "No autorizado" });
-            const verified = verifyHeaderTokenAndVerify(headers);
-            if (!verified) return res.status(403).json({ mensaje: "No autorizado" });
-            if (verified.rol !== 'ADMIN') return res.status(403).json({ mensaje: "No autorizado" });
-
             const { id } = req.params;
             const { nombre, precio, descripcion, stock, marca, categoria } = req.body;
 
@@ -92,14 +109,14 @@ class ProductController {
         }
     }
 
+    /**
+     * Eliminar un producto por su ID.
+     * También elimina todas las reseñas asociadas al producto.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async delete(req, res) {
         try {
-            const headers = req.headers['authorization'];
-            if (!headers) return res.status(403).json({ mensaje: "No autorizado" });
-            const verified = verifyHeaderTokenAndVerify(headers);
-            if (!verified) return res.status(403).json({ mensaje: "No autorizado" });
-            if (verified.rol !== 'ADMIN') return res.status(403).json({ mensaje: "No autorizado" });
-
             const { id } = req.params;
             const reviews = await Review.find({ producto: id });
             if (reviews.length > 0) await Review.deleteMany({ producto: id });
@@ -113,6 +130,12 @@ class ProductController {
         }
     }
 
+    /**
+     * Filtrar productos por rango de precio y marca.
+     * Requiere precioMin y precioMax como parámetros de query.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async filterProducts(req, res) {
         try {
             const { precioMin, precioMax, marca } = req.query;
@@ -132,6 +155,11 @@ class ProductController {
         }
     }
 
+    /**
+     * Actualizar el stock de un producto.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async updateStock(req, res) {
         try {
             const { id } = req.params;
@@ -151,6 +179,12 @@ class ProductController {
         }
     }
 
+    /**
+     * Obtener los 10 productos más destacados.
+     * Ordena productos por cantidad de reseñas en orden descendente.
+     * @param {Object} req - Objeto de solicitud de Express.
+     * @param {Object} res - Objeto de respuesta de Express.
+     */
     async getTopProducts(req, res) {
         try {
             const productsAggregate = await Product.aggregate([

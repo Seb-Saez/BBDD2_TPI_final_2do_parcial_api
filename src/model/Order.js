@@ -28,9 +28,10 @@ const productSchema = new mongoose.Schema({
 const orderSchema = new mongoose.Schema({
     usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     productos: { type: [productSchema], required: true },
-    estado: { type: String, enum: ['PENDIENTE', 'ENVIADO', 'ENTREGADO','CANCELADO'], default: 'PENDIENTE' },
+    estado: { type: String, enum: ['PENDIENTE', 'ENVIADO', 'ENTREGADO','CANCELADO'], default: 'PENDIENTE'},
     total: { type: Number },
-    metodoPago: { type: String, required: true }
+    metodoPago: { type: String, required: true },
+    fecha: { type: Date, default: Date.now }
 }, { timestamps: true });
 
 /**
@@ -50,7 +51,7 @@ productSchema.methods.getProductName = async function () {
     if (!product) throw new Error('Producto no encontrado para obtener nombre');
     this.nombre = product.nombre;
 }
-
+ 
 /**
  * Método para calcular el total de la orden.
  * Llama a calcularSubtotal en cada producto y suma todos los subtotales.
@@ -65,7 +66,7 @@ orderSchema.methods.calcularTotalyNombre = async function () {
      * @param {Array<Number>} productosSubtotal - Arreglo con los subtotales de cada producto.
      * @return {Number} total - Suma de todos los subtotales.
     */
-    const productosNames = await Promise.all(this.productos.map(item => item.getProductName()));
+    await Promise.all(this.productos.map(item => item.getProductName()));
     this.total = productosSubtotal.reduce((acc, item) => acc + item, 0);
 }
 
